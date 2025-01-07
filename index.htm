@@ -319,9 +319,9 @@
                 const dbPayload = new URLSearchParams({
                     name,
                     phone_number: phone,
-                    email: `${name.replace(/\s+/g, '.').toLowerCase()}@example.com`,
+                    email: 'karankhosla99@gmail.com',
                     stars: rating,
-                    review_words: encodeURIComponent(reviewText),
+                    review_words: feedbackNotes,
                 });
 
                 const dbResponse = await fetch(`${apiUrl}?${dbPayload.toString()}`, { method: 'GET' });
