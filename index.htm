@@ -275,39 +275,65 @@
 
 
 
-        // Generate Review based on user input
+       // Handle Generate Review button click
         document.getElementById('generateReviewButton').addEventListener('click', async () => {
-            const brand = document.getElementById('brandField').value;
-            const industry = document.getElementById('industryField').value;
-            const name = document.getElementById('nameField').value;
-            const phone = document.getElementById('phoneField').value;
-            const feedbackNotes = document.getElementById('feedbackNotes').value;
+            const brand = document.getElementById('brandField').value.trim();
+            const industry = document.getElementById('industryField').value.trim();
+            const name = document.getElementById('nameField').value.trim();
+            const phone = document.getElementById('phoneField').value.trim();
+            const feedbackNotes = document.getElementById('feedbackNotes').value.trim();
 
-            const prompt = `Write a 100 words review rating ${brand} which is in the ${industry} giving them a ${rating} out of 5.`;
+            if (!brand || !industry || !name || !phone || rating === 0) {
+                alert('Please fill in all fields and provide a rating.');
+                return;
+            }
 
-            const payload = { prompt, brand, industry, rating, name, phone, feedbackNotes };
+            const prompt = `Write a 100 words review for ${brand}, in the ${industry} industry, giving them ${rating} out of 5 stars.`;
+            const apiPayload = {
+                prompt, 
+                brand, 
+                industry, 
+                rating, 
+                name, 
+                phone, 
+                feedbackNotes
+            };
 
             try {
-                const response = await fetch('https://chat-gpt-api.karankhosla99.workers.dev/', {
+                // Generate review
+                const aiResponse = await fetch('https://chat-gpt-api.karankhosla99.workers.dev/', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(apiPayload),
                 });
 
-                const data = await response.json();
-                if (data.response && data.response.response) {
-                    document.getElementById('reviewOutput').textContent = data.response.response;
-                    document.getElementById('reviewOutput').classList.remove('hidden');
-                    document.getElementById('copyButton').classList.remove('hidden');
-                    document.getElementById('zomatoButton').classList.remove('hidden');
-                    document.getElementById('tripAdvisorButton').classList.remove('hidden');
-                    document.getElementById('googleButton').classList.remove('hidden');
-                    document.getElementById('socialButton').classList.remove('hidden');
+                const aiData = await aiResponse.json();
+                const reviewText = aiData.response?.response || 'Could not generate review.';
 
+                // Display the generated review
+                document.getElementById('reviewOutput').textContent = reviewText;
+                document.getElementById('reviewOutput').classList.remove('hidden');
+
+                // Send review details to database
+                const apiUrl = 'https://review-api.karankhosla99.workers.dev/api/add-review';
+                const dbPayload = new URLSearchParams({
+                    name,
+                    phone_number: phone,
+                    email: `${name.replace(/\s+/g, '.').toLowerCase()}@example.com`,
+                    stars: rating,
+                    review_words: encodeURIComponent(reviewText),
+                });
+
+                const dbResponse = await fetch(`${apiUrl}?${dbPayload.toString()}`, { method: 'GET' });
+
+                if (!dbResponse.ok) {
+                    throw new Error('Failed to save review to the database.');
                 }
+
+                alert('Review generated and saved successfully!');
             } catch (error) {
                 console.error('Error:', error);
-                alert('An error occurred while generating the review. Please try again.');
+                alert('An error occurred while generating or saving the review.');
             }
         });
         
