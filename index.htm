@@ -291,7 +291,7 @@
                 return;
             }
 
-            const prompt = `Write a 100 words review for ${brand}, in the ${industry} industry, giving them ${rating} out of 5 stars.`;
+            const prompt = `Write a 100 words review for ${brand}, in the ${industry} industry, giving them ${rating} out of 5 stars. talk about ${feedbackNotes} `;
             const apiPayload = {
                 prompt, 
                 brand, 
