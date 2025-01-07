@@ -317,6 +317,11 @@
                 // Display the generated review
                 document.getElementById('reviewOutput').textContent = reviewText;
                 document.getElementById('reviewOutput').classList.remove('hidden');
+                 document.getElementById('copyButton').classList.remove('hidden');
+                document.getElementById('zomatoButton').classList.remove('hidden');
+                document.getElementById('tripAdvisorButton').classList.remove('hidden');
+                document.getElementById('googleButton').classList.remove('hidden');
+                 document.getElementById('socialButton').classList.remove('hidden');
 
                 // Send review details to database
                 const apiUrl = 'https://review-api.karankhosla99.workers.dev/api/add-review';
@@ -334,7 +339,7 @@
                     throw new Error('Failed to save review to the database.');
                 }
 
-                alert('Review generated and saved successfully!');
+                alert('Review generated please copy the text and paste it in different platforms mentioned below!');
             } catch (error) {
                 console.error('Error:', error);
                 alert('An error occurred while generating or saving the review.');
