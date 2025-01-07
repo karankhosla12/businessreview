@@ -183,6 +183,8 @@
 
                     <label for="phoneField">Your Phone Number:</label>
                     <input type="tel" id="phoneField" name="phone" required>
+                    <label for="emailField">Your Email:</label>
+                    <input type="email" id="emailField" name="email" required>
 
                     <textarea id="feedbackNotes" name="feedbackNotes" placeholder="Add your notes here..."></textarea>
 
@@ -281,6 +283,7 @@
             const industry = document.getElementById('industryField').value.trim();
             const name = document.getElementById('nameField').value.trim();
             const phone = document.getElementById('phoneField').value.trim();
+            const email = document.getElementById('emailField').value.trim();
             const feedbackNotes = document.getElementById('feedbackNotes').value.trim();
 
             if (!brand || !industry || !name || !phone || rating === 0) {
@@ -296,6 +299,7 @@
                 rating, 
                 name, 
                 phone, 
+                email,
                 feedbackNotes
             };
 
@@ -319,7 +323,7 @@
                 const dbPayload = new URLSearchParams({
                     name,
                     phone_number: phone,
-                    email: 'karankhosla99@gmail.com',
+                    email: email,
                     stars: rating,
                     review_words: feedbackNotes,
                 });
