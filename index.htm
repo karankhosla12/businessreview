@@ -310,18 +310,7 @@
                 alert('An error occurred while generating the review. Please try again.');
             }
         });
-        // Send review details to database
-                const apiUrl = 'https://review-api.karankhosla99.workers.dev/api/add-review';
-                const dbPayload = new URLSearchParams({
-                    name,
-                    phone_number: phone,
-                    email: `${name.replace(/\s+/g, '.').toLowerCase()}@example.com`,
-                    stars: rating,
-                    review_words: feedbackNotes,
-                });
-
-                const dbResponse = await fetch(`${apiUrl}?${dbPayload.toString()}`, { method: 'GET' });
-
+        
 
         // Handle the Copy Review button
 document.getElementById('copyButton').addEventListener('click', async () => {
